@@ -1,11 +1,18 @@
-const config = require('./config.json')
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
+require('dotenv').config()
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
+
+
+console.log('                                                        ');
+console.log('--------------------------------------------------------');
+console.log("Taş kağıt makas botu github@devkaan tarafından. versiyon 0.0.2");
+console.log("Başlamak için !tas !kagit veya !makas. Skoru sıfırlamak için !sifirla");
+console.log('--------------------------------------------------------');
+console.log('                                                        ');
 
 var pcScore = 0;
 var humanScore = 0;
@@ -74,4 +81,4 @@ client.on('message', msg => {
     }
 });
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);

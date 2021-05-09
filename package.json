@@ -1,6 +1,6 @@
 {
   "name": "tas-kagit-makas",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "\t",
   "main": "app.js",
   "scripts": {
@@ -9,10 +9,11 @@
     "setup": "npm i",
     "dev": "nodemon app.js"
   },
-  "author": "",
+  "author": "devkaan",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.3",
     "dotenv": "^9.0.0"
-  }
+  },
+  "homepage": "https://github.com/devkaan/tas-kagit-makas-dc-bot/"
 }

@@ -14,6 +14,7 @@ client.on('ready', () => {
 
 var pool = [];
 commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
+commandsForDiscord = `!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`
 var users = [];
 var pcScore = 0;
 var humanScore = 0;
@@ -50,11 +51,11 @@ client.on('message', msg => {
                 console.log('\n--------------------------------------------------------');
                 console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için "+commands+" komutlarını kullanabilirsin.");
                 console.log('--------------------------------------------------------\n');
-                msg.channel.send('Skorunuz sıfırlandı. Başlamak için `!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata` komutlarını kullanabilirsin. :)');
+                msg.channel.send("Skorunuz sıfırlandı. Başlamak için "+commandsForDiscord+" komutlarını kullanabilirsin. :)");
             }
             else if (msg.content === "!yardim") {
                 console.log(msg.author);
-                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commands + " komutlarını kullanabilirsin. :)");
+                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için "+commandsForDiscord+" komutlarını kullanabilirsin. :)");
             }
             else if (msg.content == "!hata") {
                 msg = "Bir hata bulduysan <@" + developerID + "> adlı kullanıcıya hatanın fotoğrafını atabilir misin?";

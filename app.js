@@ -10,12 +10,10 @@ client.on('ready', () => {
       });
 });
 
-console.log('\n--------------------------------------------------------');
-console.log("Taş kağıt makas botu github@devkaan tarafından yapıldı. Güncel versiyon 0.1.2");
-console.log("Başlamak için !tas !kagit !makas !skor !sifirla !yardim");
-console.log('--------------------------------------------------------\n');
+
 
 var pool = [];
+commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
 var users = [];
 var pcScore = 0;
 var humanScore = 0;
@@ -33,10 +31,14 @@ prefix = "!";
 
 maintenance = false; // !!! DANGERUOS !!!. just use for MAINTENANCE
 
+console.log('\n--------------------------------------------------------');
+console.log("Taş kağıt makas botu github@devkaan tarafından yapıldı. Güncel versiyon 0.1.2");
+console.log("Başlamak için "+commands + " komutlarını kullanabilirsin.");
+console.log('--------------------------------------------------------\n');
+
+
 client.on('message', msg => {
-
     userid = msg.author.id;
-
     if (!msg.author.bot && msg.channel.type !== "dm") {
         if (!maintenance && msg.content.startsWith(prefix)) {
             serverid = msg.guild.id
@@ -46,13 +48,13 @@ client.on('message', msg => {
                 pcScore = 0
                 humanScore = 0
                 console.log('\n--------------------------------------------------------');
-                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için !tas !kagit !makas veya !skor");
+                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için "+commands+" komutlarını kullanabilirsin.");
                 console.log('--------------------------------------------------------\n');
-                msg.channel.send('Skorlar sıfırlandı. Başlamak için `!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim`');
+                msg.channel.send('Skorunuz sıfırlandı. Başlamak için `!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata` komutlarını kullanabilirsin. :)');
             }
             else if (msg.content === "!yardim") {
                 console.log(msg.author);
-                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için `!tas` `!kagit` `!makas` `!sifirla` `!skor` komutlarını kullanabilirsin. :)");
+                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commands + " komutlarını kullanabilirsin. :)");
             }
             else if (msg.content == "!hata") {
                 msg = "Bir hata bulduysan <@" + developerID + "> adlı kullanıcıya hatanın fotoğrafını atabilir misin?";

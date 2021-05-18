@@ -14,7 +14,7 @@ client.on('ready', () => {
 
 var pool = [];
 commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
-commandsForDiscord = `!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`
+commandsForDiscord = "`!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`"ş
 var users = [];
 var pcScore = 0;
 var humanScore = 0;

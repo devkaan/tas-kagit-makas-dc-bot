@@ -14,7 +14,7 @@ client.on('ready', () => {
 
 var pool = [];
 commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
-commandsForDiscord = "`!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`"ş
+commandsForDiscord = "`!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`"
 var users = [];
 var pcScore = 0;
 var humanScore = 0;
@@ -30,7 +30,7 @@ issent = false
 setTimeoutBool = false
 prefix = "!";
 
-maintenance = false; // !!! DANGERUOS !!!. just use for MAINTENANCE
+maintenance = true; // !!! DANGERUOS !!!. just use for MAINTENANCE
 
 console.log('\n--------------------------------------------------------');
 console.log("Taş kağıt makas botu github@devkaan tarafından yapıldı. Güncel versiyon 0.1.2");

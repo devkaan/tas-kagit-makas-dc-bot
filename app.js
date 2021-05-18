@@ -7,7 +7,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setActivity("!yardim", {
         type: "LISTENING",
-      });
+    });
 });
 
 
@@ -30,18 +30,36 @@ issent = false
 setTimeoutBool = false
 prefix = "!";
 
-maintenance = true; // !!! DANGERUOS !!!. just use for MAINTENANCE
+maintenance = false; // !!! DANGERUOS !!!. just use for MAINTENANCE
 
 console.log('\n--------------------------------------------------------');
-console.log("Taş kağıt makas botu github@devkaan tarafından yapıldı. Güncel versiyon 0.1.2");
-console.log("Başlamak için "+commands + " komutlarını kullanabilirsin.");
+console.log("Taş kağıt makas discord botu "+developerNick+" tarafından yapıldı. Güncel versiyon 0.1.3");
+console.log("Başlamak için " + commands + " komutlarını kullanabilirsin.");
 console.log('--------------------------------------------------------\n');
 
 
 client.on('message', msg => {
     userid = msg.author.id;
     if (!msg.author.bot && msg.channel.type !== "dm") {
-        if (!maintenance && msg.content.startsWith(prefix)) {
+        if (maintenance) {
+            if (msg.content.startsWith(prefix)) {
+                if (!issent) {
+                    issent = true;
+                    msg.reply("Bot şuan bakımda. Lütfen daha sonra deneyin.");
+                    console.log("Bot şuan bakımda. Lütfen daha sonra deneyin.");
+                }
+
+                if (!setTimeoutBool) {
+                    setTimeoutBool = true
+                    setTimeoutCount = 20 // second
+                    setTimeout(() => {
+                        setTimeoutBool = false
+                        issent = false
+                    }, setTimeoutCount * 1000)
+                }
+            }
+        }
+        else {
             serverid = msg.guild.id
             if (msg.content === "!sifirla") {
                 servername = msg.guild.name
@@ -49,13 +67,12 @@ client.on('message', msg => {
                 pcScore = 0
                 humanScore = 0
                 console.log('\n--------------------------------------------------------');
-                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için "+commands+" komutlarını kullanabilirsin.");
+                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için " + commands + " komutlarını kullanabilirsin.");
                 console.log('--------------------------------------------------------\n');
-                msg.channel.send("Skorunuz sıfırlandı. Başlamak için "+commandsForDiscord+" komutlarını kullanabilirsin. :)");
+                msg.channel.send("Skorunuz sıfırlandı. Başlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
             }
             else if (msg.content === "!yardim") {
-                console.log(msg.author);
-                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için "+commandsForDiscord+" komutlarını kullanabilirsin. :)");
+                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
             }
             else if (msg.content == "!hata") {
                 msg = "Bir hata bulduysan <@" + developerID + "> adlı kullanıcıya hatanın fotoğrafını atabilir misin?";
@@ -201,22 +218,10 @@ client.on('message', msg => {
             }
             console.log('\npool =>', pool);
         }
-        else {
-            if (!issent) {
-                issent = true;
-                msg.reply("Bot şuan bakımda. Lütfen daha sonra deneyin.");
-            }
-
-            if (!setTimeoutBool) {
-                setTimeoutBool = true
-                setTimeoutCount = 20 // second
-                setTimeout(() => {
-                    setTimeoutBool = false
-                    issent = false
-                }, setTimeoutCount * 1000)
-            }
-        }
     }
 });
 
 client.login(process.env.BOT_TOKEN);
+/*
+
+*/

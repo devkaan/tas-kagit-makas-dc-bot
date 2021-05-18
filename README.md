@@ -1,4 +1,4 @@
-## güncel versiyon 0.1.2
+## güncel versiyon 0.1.3
 # Gerekli modüller: discord.js dotenv fs
 ## Kurulum için  ```npm run setup```
 ### Çalıştırmak için ```node app.js``` (botu sunucunuza ekleyip, botun tokenini .env dosyasına yazdıktan sonra)
@@ -6,6 +6,9 @@
 
 
 # Yenilikler: 
+
+### version 0.1.3
+* [+] bakımda değilken mesaj gönderme bug'ı düzeltildi.
 
 ### version 0.1.2
 * [+] bakım olduğunda botu devre dışı bırakmak ve uyarı vermek için özellik getirildi.

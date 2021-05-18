@@ -13,6 +13,7 @@ client.on('ready', () => {
 
 
 var pool = [];
+version = "0.1.3";
 commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
 commandsForDiscord = "`!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`"
 var users = [];
@@ -33,7 +34,7 @@ prefix = "!";
 maintenance = false; // !!! DANGERUOS !!!. just use for MAINTENANCE
 
 console.log('\n--------------------------------------------------------');
-console.log("Taş kağıt makas discord botu "+developerNick+" tarafından yapıldı. Güncel versiyon 0.1.3");
+console.log("Taş kağıt makas discord botu "+developerNick+" tarafından yapıldı. Güncel versiyon "+version);
 console.log("Başlamak için " + commands + " komutlarını kullanabilirsin.");
 console.log('--------------------------------------------------------\n');
 
@@ -70,6 +71,9 @@ client.on('message', msg => {
                 console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için " + commands + " komutlarını kullanabilirsin.");
                 console.log('--------------------------------------------------------\n');
                 msg.channel.send("Skorunuz sıfırlandı. Başlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
+            }
+            if (msg.content === "!v") {
+                console.log("Güncel versiyon: "+version);
             }
             else if (msg.content === "!yardim") {
                 msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");

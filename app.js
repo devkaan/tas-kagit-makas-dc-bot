@@ -57,6 +57,7 @@ client.on('ready', async () => {
             console.log('\n');
         });
     } else {
+        console.log('Save File is already created.');
         pool = await getJSON(saveFileDir)
         console.log(pool);
     }

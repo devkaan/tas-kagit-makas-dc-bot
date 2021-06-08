@@ -1,4 +1,4 @@
-## güncel versiyon 1.0.0
+## güncel versiyon 1.0.1
 # Gerekli modüller: discord.js dotenv fs
 ## Kurulum için  ```npm run setup```
 ### Çalıştırmak için ```node app.js``` (botu sunucunuza ekleyip, botun tokenini .env dosyasına yazdıktan sonra)

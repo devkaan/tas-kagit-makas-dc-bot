@@ -7,7 +7,8 @@
     "start": "node ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "setup": "npm i",
-    "dev": "nodemon app.js --config nodemon.json"
+    "dev": "nodemon app.js --config nodemon.json",
+    "deploy":"git push origin\rgit push heroku"
   },
   "author": "devkaan",
   "license": "ISC",

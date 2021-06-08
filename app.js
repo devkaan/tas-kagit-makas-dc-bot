@@ -43,6 +43,7 @@ console.log('--------------------------------------------------------\n');
 
 
 client.on('ready', async () => {
+    console.log(`LOGGGGGGGGGGGGGG`);
     console.log(`Logged in as ${client.user.tag}!`);
     client.user.setActivity("-yardim", {
         type: "LISTENING",

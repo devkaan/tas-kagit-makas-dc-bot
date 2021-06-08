@@ -7,7 +7,7 @@ require('dotenv').config()
 
 
 
-var version = "1.0.0";
+var version = "1.0.1";
 var commandsText = "-tas  -kagit  -makas  -skor  -sifirla  -yardim  -hata";
 var commandsForDiscord = "`-tas`  `-kagit`  `-makas`  `-sifirla`  `-skor`  `-yardim`  `-hata`"
 var pool = {}, users = [], pcScore = 0, humanScore = 0;
@@ -298,7 +298,7 @@ client.on('message', async message => {
                     }
                 }
             }
-
+            console.log(`pool =>`,pool);
         }
     }
 });

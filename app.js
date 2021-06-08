@@ -1,52 +1,113 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs');
+var format = require('date-format');
 require('dotenv').config()
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setActivity("!yardim", {
-        type: "LISTENING",
-    });
-});
 
 
 
-var pool = [];
-version = "0.1.3";
-commands = "!tas !kagit !makas !skor !sifirla !yardim !hata";
-commandsForDiscord = "`!tas` `!kagit` `!makas` `!sifirla` `!skor` `!yardim` `!hata`"
-var users = [];
-var pcScore = 0;
-var humanScore = 0;
-// const command = "!bot";
-arr = ['taş', 'kağıt', 'makas'];
-var serverid
-var servername
-var userid
-const botid = 840532235924013086;
-developerNick = "devkaan#6560"
-developerID = 317264858674626560
-issent = false
-setTimeoutBool = false
-prefix = "!";
+var version = "1.0.0";
+var commandsText = "-tas  -kagit  -makas  -skor  -sifirla  -yardim  -hata";
+var commandsForDiscord = "`-tas`  `-kagit`  `-makas`  `-sifirla`  `-skor`  `-yardim`  `-hata`"
+var pool = {}, users = [], pcScore = 0, humanScore = 0;
+// const command = "-bot";
 
-maintenance = false; // !!! DANGERUOS !!!. just use for MAINTENANCE
+var arr = ['taş', 'kağıt', 'makas'], serverid, servername, userid, isAdministrator = false, isDeveloper = false
+const prefix = "-",
+    commands = [`${prefix}tas`, `${prefix}kagit`, `${prefix}makas`, `${prefix}skor`, `${prefix}sifirla`, `${prefix}yardim`, `${prefix}hata`,],
+    botid = 840532235924013086,
+    developerNick = "devkaan#6560",
+    developerID = 317264858674626560,
+    saveFileDir = "save.json"
+
+var maintenance = false, // !!! DANGERUOS !!!. just use for MAINTENANCE
+    setTimeoutBool = false,
+    issent = false
+const getJSON = (fullpathname) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(fullpathname, (err, data) => {
+            if (err) {
+                reject(err)  // calling `reject` will cause the promise to fail with or without the error passed as an argument
+                return        // and we don't want to go any further
+            }
+            resolve(JSON.parse(data))
+        })
+    })
+}
 
 console.log('\n--------------------------------------------------------');
-console.log("Taş kağıt makas discord botu "+developerNick+" tarafından yapıldı. Güncel versiyon "+version);
-console.log("Başlamak için " + commands + " komutlarını kullanabilirsin.");
+console.log("Taş kağıt makas discord botu " + developerNick + " tarafından yapıldı. Güncel versiyon " + version);
+console.log("Başlamak için " + commandsText + " komutlarını kullanabilirsin.");
 console.log('--------------------------------------------------------\n');
 
 
-client.on('message', msg => {
-    userid = msg.author.id;
-    if (!msg.author.bot && msg.channel.type !== "dm") {
+client.on('ready', async () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setActivity("-yardim", {
+        type: "LISTENING",
+    });
+    console.log(`Bot activity is set!`);
+    if (!fs.existsSync(saveFileDir)) {
+        let content = {}
+        content = JSON.stringify(content)
+        await fs.writeFile(saveFileDir, content, function (err) {
+            if (err) throw err;
+            console.log('Save File is created at START successfully.');
+            console.log('\n');
+        });
+    } else {
+        pool = await getJSON(saveFileDir)
+        console.log(pool);
+    }
+});
+
+client.on('message', async message => {
+    userid = message.author.id;
+    try {
+        isAdministrator = message.member.hasPermission("ADMINISTRATOR")
+    } catch (roleError) {
+        isAdministrator = false
+    }
+    isDeveloper = (userid == developerID);
+
+    if (message.content === `${prefix}tkm_maintenance1` && isDeveloper) {
         if (maintenance) {
-            if (msg.content.startsWith(prefix)) {
+            textMessage = `<@${developerID}>\nBakım modu zaten aktif.`
+        } else {
+            maintenance = true
+            textMessage = `<@${developerID}>\nBakım modu aktif edildi.`
+        }
+        await client.users.fetch(userid, false).then((user) => {
+            textMessage += `\nTarih: ${format.asString('dd/mm/yyyy hh:mm:ss', new Date())}`
+            user.send(textMessage);
+        });
+    }
+    else if (message.content === `${prefix}tkm_maintenance0` && isDeveloper) {
+        if (maintenance) {
+            maintenance = false
+            textMessage = `<@${developerID}>\nBakım modu devre dışı bırakıldı.`
+        } else {
+            textMessage = `<@${developerID}>\nBakım modu zaten devre dışı.`
+        }
+        await client.users.fetch(userid, false).then((user) => {
+            textMessage += `\nTarih: ${format.asString('dd/mm/yyyy hh:mm:ss', new Date())}`
+            user.send(textMessage);
+        });
+    }
+    else if (message.content === `${prefix}tkm_version` && isDeveloper) {
+        textMessage = `Güncel versiyon: ${version}\nTarih: ${format.asString('dd/mm/yyyy hh:mm:ss', new Date())}`
+        await client.users.fetch(userid, false).then((user) => {
+            user.send(textMessage);
+        });
+    }
+
+    if (!message.author.bot && message.channel.type !== "dm") {
+        if (maintenance) {
+            if (message.content.startsWith(prefix)) {
                 if (!issent) {
                     issent = true;
-                    msg.reply("Bot şuan bakımda. Lütfen daha sonra deneyin.");
+                    message.reply("Bot şuan bakımda. Lütfen daha sonra deneyin.");
                     console.log("Bot şuan bakımda. Lütfen daha sonra deneyin.");
                 }
 
@@ -61,31 +122,28 @@ client.on('message', msg => {
             }
         }
         else {
-            serverid = msg.guild.id
-            if (msg.content === "!sifirla") {
-                servername = msg.guild.name
+            serverid = message.guild.id
+            if (message.content === `${prefix}sifirla` && isAdministrator) {
+                varservername = message.guild.name
                 delete pool[serverid]
                 pcScore = 0
                 humanScore = 0
                 console.log('\n--------------------------------------------------------');
-                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için " + commands + " komutlarını kullanabilirsin.");
+                console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru sıfırlandı. Başlamak için " + commandsText + " komutlarını kullanabilirsin.");
                 console.log('--------------------------------------------------------\n');
-                msg.channel.send("Skorunuz sıfırlandı. Başlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
+                message.channel.send("Skorunuz sıfırlandı. Başlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
             }
-            if (msg.content === "!v") {
-                console.log("Güncel versiyon: "+version);
+            else if (message.content === `${prefix}yardim`) {
+                message.channel.send("Merhaba <@" + message.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
             }
-            else if (msg.content === "!yardim") {
-                msg.channel.send("Merhaba <@" + msg.author.id + ">, Ben Taş Kağıt Makas Botu (Taş Kağıt Makas#9379).\n\nBaşlamak için " + commandsForDiscord + " komutlarını kullanabilirsin. :)");
-            }
-            else if (msg.content == "!hata") {
-                msg = "Bir hata bulduysan <@" + developerID + "> adlı kullanıcıya hatanın fotoğrafını atabilir misin?";
-                client.users.fetch(userid, false).then((user) => {
-                    user.send(msg);
+            else if (message.content === `${prefix}hata`) {
+                textMessage = `Bir hata bulduysan/olduğunu düşünüyorsan <@${developerID}> adlı kullanıcıya mesaj gönderebilirsin.`;
+                await client.users.fetch(userid, false).then((user) => {
+                    user.send(textMessage);
                 });
             }
-            else if (msg.content === "!skor") {
-                var servername = msg.guild.name
+            else if (message.content === `${prefix}skor`) {
+                var servername = message.guild.name
                 var a, b
                 try {
                     a = pool[serverid].humanScore
@@ -100,23 +158,42 @@ client.on('message', msg => {
                 console.log('\n--------------------------------------------------------');
                 console.log("ID'si  " + serverid + "  olan sunucu (" + servername + ")'nun skoru:\nsen: " + a + " bilgisayar: " + b);
                 console.log('--------------------------------------------------------\n');
-                msg.channel.send("SKOR:\nsen: " + a + " bilgisayar: " + b);
+                message.channel.send("Skorunuz: " + a + "\nBilgisayarın skoru: " + b);
+            }
+            else if (message.content === `${prefix}kaydet`) {
+                if (!fs.existsSync(saveFileDir)) {
+                    let content = {}
+                    content = JSON.stringify(content)
+                    fs.writeFile(saveFileDir, content, function (err) {
+                        if (err) throw err;
+                        console.log('Save File is created at SAVE successfully.');
+                        console.log('\n');
+                    });
+                } else {
+                    var content = pool
+                    content.lastChanged = new Date().getTime();
+                    fs.writeFile(saveFileDir, JSON.stringify(content), function (err) {
+                        if (err) throw err;
+                        console.log('Skorunuz başarıyla kaydedildi.');
+                        console.log('\n');
+                    });
+                    message.channel.send(`Skorunuz başarıyla kaydedildi.`);
+                }
             }
             // !tas !kagit !makas
             else {
                 if (!pool[serverid]) {
                     isfirst = false;
-                    console.log('isfirst = false');
                     pool[serverid] = {
                         pcScore: 0,
                         humanScore: 0
                     }
                 }
-                if (msg.content === ("!tas")) {
+                if (message.content === ("-tas")) {
                     randomInt = Math.floor(Math.random() * 3);
                     pcDecision = arr[randomInt];
                     if (arr[0] == pcDecision) {
-                        msg.reply("Berabere!");
+                        message.reply("Berabere!");
                     }
                     else if (arr[1] == pcDecision) {
                         try {
@@ -130,7 +207,7 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].pcScore = 1
                         }
-                        msg.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
                     else if (arr[2] == pcDecision) {
                         try {
@@ -144,15 +221,15 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].humanScore = 1
                         }
-                        msg.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
 
                 }
-                else if (msg.content === ("!kagit")) {
+                else if (message.content === ("-kagit")) {
                     randomInt = Math.floor(Math.random() * 3);
                     pcDecision = arr[randomInt];
                     if (arr[1] == pcDecision) {
-                        msg.reply("Berabere!");
+                        message.reply("Berabere!");
                     }
                     else if (arr[2] == pcDecision) {
                         try {
@@ -166,7 +243,7 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].pcScore = 1
                         }
-                        msg.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
                     else if (arr[0] == pcDecision) {
                         try {
@@ -180,15 +257,15 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].humanScore = 1
                         }
-                        msg.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
 
                 }
-                else if (msg.content === ("!makas")) {
+                else if (message.content === ("-makas")) {
                     randomInt = Math.floor(Math.random() * 3);
                     pcDecision = arr[randomInt];
                     if (arr[2] == pcDecision) {
-                        msg.reply("Berabere!");
+                        message.reply("Berabere!");
                     }
                     else if (arr[0] == pcDecision) {
                         try {
@@ -202,7 +279,7 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].pcScore = 1
                         }
-                        msg.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Bilgisayar (" + pcDecision + ") kazandı. \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
                     else if (arr[1] == pcDecision) {
                         try {
@@ -216,16 +293,13 @@ client.on('message', msg => {
                         } catch (error) {
                             pool[serverid].humanScore = 1
                         }
-                        msg.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
+                        message.reply("Sen kazandın. Bilgisayar (" + pcDecision + ") \nSKOR sen: " + humanScore + " bilgisayar: " + pcScore);
                     }
                 }
             }
-            console.log('\npool =>', pool);
+
         }
     }
 });
 
 client.login(process.env.BOT_TOKEN);
-/*
-
-*/

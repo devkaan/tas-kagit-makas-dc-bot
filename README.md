@@ -1,11 +1,19 @@
-## güncel versiyon 0.1.3
+## güncel versiyon 1.0.0
 # Gerekli modüller: discord.js dotenv fs
 ## Kurulum için  ```npm run setup```
 ### Çalıştırmak için ```node app.js``` (botu sunucunuza ekleyip, botun tokenini .env dosyasına yazdıktan sonra)
-### Kullanılabilen komutlar ```!tas``` ```!kagit``` ```!makas``` ```!sifirla``` ```!skor``` ```!hata```
+### Kullanılabilen komutlar ```-tas``` ```-kagit``` ```-makas``` ```-sifirla``` ```-skor``` ```-hata```
 
 
 # Yenilikler: 
+
+### version 1.0.0
+* [+] Önek artık artık - (tire işareti). Örnek kullanım: !tas (eski) -tas (yeni)
+* [+] Artık sadece *YÖNETİCİ* yetkisi olanlar skoru sıfırlayabilir.
+* [+] Artık skorunuzu -kaydet komutuyla kaydedebilirsiniz.
+* [+] -tkm_version komutu, güncel versiyonu *GELİŞTİRİCİYE* özel mesaj olarak atar.
+* [+] -tkm_maintenance1 komutu yazan kişi *GELİŞTİRİCİYSE* botun bakım modunu açar.
+* [+] -tkm_maintenance0 komutu yazan kişi *GELİŞTİRİCİYSE* botun bakım modunu kapatır.
 
 ### version 0.1.3
 * [+] bakımda değilken mesaj gönderme bug'ı düzeltildi.

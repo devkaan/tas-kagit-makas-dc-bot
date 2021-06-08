@@ -7,11 +7,12 @@
     "start": "node ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "setup": "npm i",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js --config nodemon.json"
   },
   "author": "devkaan",
   "license": "ISC",
   "dependencies": {
+    "date-format": "^3.0.0",
     "discord.js": "^12.5.3",
     "dotenv": "^9.0.0"
   },
